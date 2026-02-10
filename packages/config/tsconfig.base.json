@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+      /* 🔒 Seguridad y calidad */
+      "strict": true,
+      "noImplicitOverride": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      "forceConsistentCasingInFileNames": true,
+  
+      /* ⚙️ Output */
+      "declaration": true,
+      "sourceMap": true,
+  
+      /* 📦 Módulos */
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+  
+      /* 🧠 Base para paths */
+      "baseUrl": ".",
+      "paths": {
+        "@shared/*": ["packages/shared/*"]
+      },
+  
+      /* 🧹 Performance */
+      "skipLibCheck": true
+    }
+  }
+  

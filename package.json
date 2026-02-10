@@ -1,0 +1,17 @@
+{
+  "name": "gym-software",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -ws",
+    "build": "npm run build -ws",
+    "lint": "npm run lint -ws"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1"
+  }
+}

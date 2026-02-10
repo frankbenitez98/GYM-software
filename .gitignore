@@ -1,0 +1,29 @@
+# Node
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+coverage/
+**/dist/
+**/build/
+
+# Vite
+apps/web/dist/
+
+# Nest
+apps/api/dist/
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
