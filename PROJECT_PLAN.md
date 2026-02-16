@@ -415,3 +415,54 @@ Full MVP verification:
 5. Record payments
 6. Check in a member (validates active subscription)
 7. Dashboard reflects all data correctly
+
+---
+
+## 📋 Post-MVP: Backlog de Mejoras
+
+_Funcionalidades y mejoras a considerar después de completar el MVP._
+
+### Gestión de Usuarios del Sistema
+- [ ] UI para gestión de usuarios (ADMIN/STAFF)
+  - Página para listar usuarios del gimnasio
+  - Formulario para crear nuevos usuarios (conectar con `/auth/register`)
+  - Editar/desactivar usuarios existentes
+  - Ver roles y permisos
+- [ ] Endpoint para listar usuarios del gym actual
+- [ ] Endpoint para editar/desactivar usuarios
+
+### Multi-Tenancy
+- [ ] Endpoints CRUD para Gym
+- [ ] Proceso de onboarding para nuevos gimnasios
+- [ ] Aislamiento de datos por gimnasio (validar en todos los endpoints)
+- [ ] Subdominios o rutas por gimnasio
+
+### Mejoras de Seguridad
+- [ ] Implementar refresh tokens
+- [ ] Rate limiting en endpoints de auth
+- [ ] Logs de auditoría (quién hizo qué y cuándo)
+
+### Reportes y Analytics
+- [ ] Reportes de ingresos mensuales/anuales
+- [ ] Análisis de retención de miembros
+- [ ] Estadísticas de asistencia
+- [ ] Exportar datos a Excel/PDF
+
+### Notificaciones
+- [ ] Email cuando suscripción está por vencer
+- [ ] SMS/WhatsApp para recordatorios
+- [ ] Notificaciones de pagos pendientes
+
+### Hardware de Acceso (Futuro)
+- [ ] Integración con scanner biométrico (ZKTeco)
+- [ ] Control de puerta automático (Shelly 1)
+- [ ] API para dispositivos externos
+
+### UX/UI
+- [ ] Tema oscuro
+- [ ] Internacionalización (i18n) para otros idiomas
+- [ ] Versión mobile/responsive mejorada
+- [ ] PWA (Progressive Web App)
+
+### Otras Ideas
+- [ ] _Agregar aquí nuevas ideas durante el desarrollo..._
