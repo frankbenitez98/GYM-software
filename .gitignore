@@ -27,3 +27,7 @@ apps/api/dist/
 .DS_Store
 .vscode/
 .idea/
+
+# Claude AI
+.claude/    
+CLAUDE.md

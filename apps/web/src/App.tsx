@@ -1,30 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import ProtectedRoute from './components/auth/ProtectedRoute'
+import AppLayout from './components/layout/AppLayout'
+import LoginPage from './pages/LoginPage'
+import DashboardPage from './pages/DashboardPage'
+import MembersListPage from './pages/MembersListPage'
+import MemberDetailPage from './pages/MemberDetailPage'
+import MemberFormPage from './pages/MemberFormPage'
+import PlansListPage from './pages/PlansListPage'
+import PlanFormPage from './pages/PlanFormPage'
+import AssignSubscriptionPage from './pages/AssignSubscriptionPage'
+import PaymentsListPage from './pages/PaymentsListPage'
+import RecordPaymentPage from './pages/RecordPaymentPage'
+import CheckInPage from './pages/CheckInPage'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1 className="text-3xl font-bold text-red-500 underline">Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount(count => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/members" element={<MembersListPage />} />
+            <Route path="/members/new" element={<MemberFormPage />} />
+            <Route path="/members/:id" element={<MemberDetailPage />} />
+            <Route path="/members/:id/edit" element={<MemberFormPage />} />
+            <Route path="/members/:id/subscriptions/new" element={<AssignSubscriptionPage />} />
+            <Route path="/plans" element={<PlansListPage />} />
+            <Route path="/plans/new" element={<PlanFormPage />} />
+            <Route path="/plans/:id/edit" element={<PlanFormPage />} />
+            <Route path="/payments" element={<PaymentsListPage />} />
+            <Route path="/payments/new" element={<RecordPaymentPage />} />
+            <Route path="/check-in" element={<CheckInPage />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-export default App

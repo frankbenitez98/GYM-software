@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  TRANSFER
+}
+
+enum PlanStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Gym {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String?
+  phone     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  users               User[]
+  members             Member[]
+  subscriptionPlans   SubscriptionPlan[]
+  memberSubscriptions MemberSubscription[]
+  payments            Payment[]
+  checkIns            CheckIn[]
+
+  @@map("gyms")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  role      UserRole @default(STAFF)
+  gymId     Int      @map("gym_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  gym      Gym       @relation(fields: [gymId], references: [id])
+  checkIns CheckIn[]
+
+  @@map("users")
+}
+
+model Member {
+  id               Int          @id @default(autoincrement())
+  memberCode       String       @unique @map("member_code")
+  firstName        String       @map("first_name")
+  lastName         String       @map("last_name")
+  email            String?
+  phone            String?
+  identityDocument String?      @map("identity_document")
+  photoUrl         String?      @map("photo_url")
+  emergencyContact String?      @map("emergency_contact")
+  emergencyPhone   String?      @map("emergency_phone")
+  dateOfBirth      DateTime?    @map("date_of_birth")
+  enrollmentDate   DateTime     @default(now()) @map("enrollment_date")
+  status           MemberStatus @default(ACTIVE)
+  notes            String?
+  gymId            Int          @map("gym_id")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  gym           Gym                  @relation(fields: [gymId], references: [id])
+  subscriptions MemberSubscription[]
+  checkIns      CheckIn[]
+
+  @@index([gymId, lastName])
+  @@index([gymId, memberCode])
+  @@map("members")
+}
+
+model SubscriptionPlan {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String?
+  durationDays Int        @map("duration_days")
+  price        Decimal    @db.Decimal(10, 2)
+  status       PlanStatus @default(ACTIVE)
+  gymId        Int        @map("gym_id")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  gym           Gym                  @relation(fields: [gymId], references: [id])
+  subscriptions MemberSubscription[]
+
+  @@map("subscription_plans")
+}
+
+model MemberSubscription {
+  id        Int                @id @default(autoincrement())
+  memberId  Int                @map("member_id")
+  planId    Int                @map("plan_id")
+  startDate DateTime           @map("start_date")
+  endDate   DateTime           @map("end_date")
+  status    SubscriptionStatus @default(ACTIVE)
+  gymId     Int                @map("gym_id")
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  member   Member           @relation(fields: [memberId], references: [id])
+  plan     SubscriptionPlan @relation(fields: [planId], references: [id])
+  gym      Gym              @relation(fields: [gymId], references: [id])
+  payments Payment[]
+
+  @@index([memberId])
+  @@index([gymId, status])
+  @@map("member_subscriptions")
+}
+
+model Payment {
+  id             Int           @id @default(autoincrement())
+  subscriptionId Int           @map("subscription_id")
+  amount         Decimal       @db.Decimal(10, 2)
+  method         PaymentMethod
+  paymentDate    DateTime      @default(now()) @map("payment_date")
+  reference      String?
+  notes          String?
+  gymId          Int           @map("gym_id")
+  createdAt      DateTime      @default(now()) @map("created_at")
+
+  subscription MemberSubscription @relation(fields: [subscriptionId], references: [id])
+  gym          Gym                @relation(fields: [gymId], references: [id])
+
+  @@index([gymId, paymentDate])
+  @@map("payments")
+}
+
+model CheckIn {
+  id           Int      @id @default(autoincrement())
+  memberId     Int      @map("member_id")
+  registeredBy Int      @map("registered_by")
+  timestamp    DateTime @default(now())
+  gymId        Int      @map("gym_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  member Member @relation(fields: [memberId], references: [id])
+  staff  User   @relation(fields: [registeredBy], references: [id])
+  gym    Gym    @relation(fields: [gymId], references: [id])
+
+  @@index([gymId, timestamp])
+  @@index([memberId, timestamp])
+  @@map("check_ins")
+}
